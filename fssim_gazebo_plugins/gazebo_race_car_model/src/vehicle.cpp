@@ -142,7 +142,7 @@ void Vehicle::update(const double dt) {
     state_pub.r += noise::getGaussianNoise(0.0, param_.sensors.noise_r_sigma);
     pub_ground_truth_.publish(state_pub);
 
-    publishCarInfo(alphaF, alphaR, FyF, FyR, Fx);
+    publishCarInfo(alphaF, alphaR, FyF, FyR, Fx, input_.delta);
 }
 
 void Vehicle::onRes(const fssim_common::ResStateConstPtr &msg) {
@@ -310,7 +310,8 @@ void Vehicle::publishCarInfo(const AxleTires &alphaF,
                              const AxleTires &alphaR,
                              const AxleTires &FyF,
                              const AxleTires &FyR,
-                             const double Fx) const {
+                             const double Fx, 
+                             const double steering) const {
     // Publish Car Info
     fssim_common::CarInfo car_info;
     car_info.header.stamp = ros::Time::now();
@@ -331,7 +332,8 @@ void Vehicle::publishCarInfo(const AxleTires &alphaF,
     car_info.Fy_r_l = FyR.left;
     car_info.Fy_r_r = FyR.right;
 
-    car_info.Fx = Fx;
+    const double m_lon = param_.inertia.m + param_.driveTrain.m_lon_add;
+    car_info.acceleration = Fx / m_lon;
 
     // Add state info
     car_info.vx = state_.v_x;

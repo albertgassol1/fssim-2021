@@ -93,7 +93,8 @@ class Vehicle {
                         const AxleTires &alphaR,
                         const AxleTires &FyF,
                         const AxleTires &FyR,
-                        const double Fx) const;
+                        const double Fx
+                        const double steering) const;
 
     double getFx(const State &x, const Input &u);
 

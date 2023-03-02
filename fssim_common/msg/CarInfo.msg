@@ -28,4 +28,4 @@ float64 Fy_r
 float64 Fy_r_l
 float64 Fy_r_r
 
-float64 Fx
+float64 acceleration
